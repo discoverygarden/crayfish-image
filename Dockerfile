@@ -74,11 +74,11 @@ USER composer
 
 RUN --mount=type=cache,target=/home/composer/cache,uid=2000 \
   cd /opt/www/crayfish/Homarus \
-  && composer install --no-interaction \
+  && composer install --no-dev --no-interaction \
   && cd /opt/www/crayfish/Houdini \
-  && composer install --no-interaction \
+  && composer install --no-dev --no-interaction \
   && cd /opt/www/crayfish/Hypercube \
-  && composer install --no-interaction
+  && composer install --no-dev --no-interaction
 
 USER root
 
