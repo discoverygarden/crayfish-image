@@ -10,6 +10,7 @@ RUN apt-get -qqy update \
      ffmpeg imagemagick tesseract-ocr \
      apache2 apache2-utils php php-common php-dev libapache2-mod-php \
      php-ctype php-iconv php-simplexml \
+     poppler-utils \
   && apt-get clean
 
 # composer install
