@@ -11,6 +11,7 @@ RUN apt-get -qqy update \
      apache2 apache2-utils php php-common php-dev libapache2-mod-php \
      php-ctype php-iconv php-simplexml \
      poppler-utils \
+     ghostscript \
   && apt-get clean
 
 # composer install
