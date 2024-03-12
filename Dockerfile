@@ -9,7 +9,7 @@ RUN apt-get -qqy update \
      ca-certificates curl git openssl sudo unzip \
      ffmpeg imagemagick tesseract-ocr \
      apache2 apache2-utils php php-common php-dev libapache2-mod-php \
-     php-ctype php-iconv php-simplexml \
+     php-ctype php-iconv php-simplexml php-curl \
      poppler-utils \
      ghostscript \
   && apt-get clean
