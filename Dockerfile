@@ -92,5 +92,7 @@ RUN chown -R www-data:www-data /opt/www/crayfish
 USER root 
 
 WORKDIR /opt/www/crayfish
+# Set ENV var OMP_THREAD_LIMIT=1 to avoid multi-threading
+ENV OMP_THREAD_LIMIT=1
 
 CMD ["/usr/sbin/apachectl", "-D", "FOREGROUND"]
