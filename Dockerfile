@@ -1,4 +1,4 @@
-FROM debian:11.10-slim
+FROM debian:11.11-slim
 
 ENV CRAYFISH_GIT_REF=3.x
 
