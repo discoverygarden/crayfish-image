@@ -22,10 +22,10 @@ COPY imagemagick_policy.xml /etc/ImageMagick-6/policy.xml
 
 #--------------------------------------------------------------
 # setup PHP
-RUN mkdir -p /etc/php/7.4/dgi
-COPY dgi_99-config.ini /etc/php/7.4/dgi/99-config.ini
-RUN ln -s /etc/php/7.4/dgi/99-config.ini /etc/php/7.4/apache2/conf.d/99-config.ini \
-  && ln -s /etc/php/7.4/dgi/99-config.ini /etc/php/7.4/cli/conf.d/99-config.ini
+RUN mkdir -p /etc/php/8.2/dgi
+COPY dgi_99-config.ini /etc/php/8.2/dgi/99-config.ini
+RUN ln -s /etc/php/8.2/dgi/99-config.ini /etc/php/8.2/apache2/conf.d/99-config.ini \
+  && ln -s /etc/php/8.2/dgi/99-config.ini /etc/php/8.2/cli/conf.d/99-config.ini
 
 # setup apache2
 #RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf \
