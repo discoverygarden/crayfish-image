@@ -8,7 +8,10 @@
       "matchPackageNames":[
         "debian"
       ],
-      "allowedVersions": "<12.0.0"
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "enabled": false
     }
   ]
 }
