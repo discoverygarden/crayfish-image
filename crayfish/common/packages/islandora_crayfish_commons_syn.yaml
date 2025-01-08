@@ -1,0 +1,3 @@
+---
+islandora_crayfish_commons_syn:
+  config_xml: "/opt/www/crayfish/syn-settings.xml"

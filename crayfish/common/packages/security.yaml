@@ -1,9 +1,13 @@
+---
 security:
+    enable_authenticator_manager: true
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        jwt_user_provider:
-            id: Islandora\Crayfish\Commons\Syn\JwtUserProvider
+        users_in_memory:
+          memory: ~
+        #jwt_user_provider:
+        #  id: Islandora\Crayfish\Commons\Syn\JwtUserProvider
 
     firewalls:
         dev:
@@ -15,10 +19,14 @@ security:
             # Need stateless or it reloads the User based on a token.
             stateless: true
 
-            provider: jwt_user_provider
-            guard:
-                authenticators:
-                    - Islandora\Crayfish\Commons\Syn\JwtAuthenticator
+            #provider: jwt_user_provider
+            provider: users_in_memory
+            #guard:
+            #    authenticators:
+            #        - Islandora\Crayfish\Commons\Syn\JwtAuthenticator
+            custom_authenticators:
+              - islandora_crayfish_commons_syn.jwt.authenticator
+
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
