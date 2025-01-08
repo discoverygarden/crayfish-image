@@ -86,8 +86,6 @@ RUN \
   --mount=type=cache,target=/home/composer/cache,uid=$COMPOSER_UID \
   <<EOS
 for i in "Homarus" "Houdini" "Hypercube"; do \
-  composer config --working-dir=$i repositories.private-packagist composer https://repo.packagist.com/discoverygarden/ ; \
-  composer config --working-dir=$i repositories.packagist.org false ; \
   composer require --working-dir=$i --no-update --no-interaction -- \
     "discoverygarden/crayfish-commons-syn:${SYN_COMPOSER_SPEC}" ; \
   composer install --working-dir=$i --no-dev --no-interaction ; \
