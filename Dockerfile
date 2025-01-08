@@ -1,16 +1,21 @@
-FROM debian:12.8-slim
-
-ARG CRAYFISH_COMPOSER_SPEC=4.x-dev
-ARG SYN_COMPOSER_SPEC="dev-feature/syn-config as 1.x-dev"
-
-ARG TARGETARCH
-ARG TARGETVARIANT
-ARG PHP_INI_DIR=/etc/php/8.2
-
-ENV COMPOSER_HOME=/home/composer
 ARG COMPOSER_UID=2000
 ARG WWW_DATA_UID=33
 ARG WWW_DATA_GID=33
+ARG COMPOSER_HOME=/home/composer
+
+FROM debian:12.8-slim AS base
+
+ARG CRAYFISH_COMPOSER_SPEC="^4.1"
+ARG SYN_COMPOSER_SPEC="dev-feature/syn-config as 1.x-dev"
+
+ARG COMPOSER_UID=2000
+ARG WWW_DATA_UID=33
+ARG WWW_DATA_GID=33
+ARG COMPOSER_HOME=/home/composer
+ENV COMPOSER_HOME=$COMPOSER_HOME
+
+ARG TARGETARCH
+ARG TARGETVARIANT
 
 EXPOSE 80
 
@@ -28,13 +33,18 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y -o Dpkg::Options::="--force-co
   poppler-utils ghostscript
 EOS
 
+FROM base AS composer-install
+
 # composer install
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+FROM composer-install AS general-configuration
 
 COPY --link imagemagick_policy.xml /etc/ImageMagick-6/policy.xml
 
 #--------------------------------------------------------------
 # setup PHP
+ARG PHP_INI_DIR=/etc/php/8.2
 WORKDIR $PHP_INI_DIR
 COPY --link dgi_99-config.ini dgi/99-config.ini
 RUN ln -s $PHP_INI_DIR/dgi/99-config.ini apache2/conf.d/99-config.ini \
@@ -63,6 +73,8 @@ RUN a2enmod rewrite \
 
 RUN useradd composer -g $WWW_DATA_GID -m --uid $COMPOSER_UID -d $COMPOSER_HOME
 
+FROM general-configuration AS project-installation
+
 #--------------------------------------------------------------
 # setup crayfish
 
@@ -86,9 +98,9 @@ RUN \
   --mount=type=cache,target=/home/composer/cache,uid=$COMPOSER_UID \
   <<EOS
 for i in "Homarus" "Houdini" "Hypercube"; do \
-  composer require --working-dir=$i --no-update --no-interaction -- \
-    "discoverygarden/crayfish-commons-syn:${SYN_COMPOSER_SPEC}" ; \
-  composer install --working-dir=$i --no-dev --no-interaction ; \
+  composer require --working-dir=$i --no-update --no-interaction -- "discoverygarden/crayfish-commons-syn:${SYN_COMPOSER_SPEC}"
+  composer install --working-dir=$i --no-dev --no-interaction
+  composer remove --working-dir=$i --no-interaction -- "lexik/jwt-authentication-bundle"
 done
 EOS
 
