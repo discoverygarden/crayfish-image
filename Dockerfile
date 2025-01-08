@@ -8,6 +8,9 @@ ARG TARGETVARIANT
 ARG PHP_INI_DIR=/etc/php/8.2
 
 ENV COMPOSER_HOME=/home/composer
+ARG COMPOSER_UID=2000
+ARG WWW_DATA_UID=33
+ARG WWW_DATA_GID=33
 
 EXPOSE 80
 
@@ -43,7 +46,7 @@ WORKDIR /
 RUN echo 'ErrorLog /dev/stderr' >> /etc/apache2/apache2.conf \
   && echo 'TransferLog /dev/stdout' >> /etc/apache2/apache2.conf \
   && echo 'CustomLog /dev/stdout combined' >> /etc/apache2/apache2.conf \
-  && chown -R www-data /var/log/apache2
+  && chown -R $WWW_DATA_UID /var/log/apache2
 
 # disable and enable sites
 COPY --link 25-80-crayfish.conf /etc/apache2/sites-available/
@@ -58,7 +61,7 @@ RUN a2enmod rewrite \
   && a2enmod headers
 
 
-RUN useradd composer -g www-data -m --uid 2000 -d $COMPOSER_HOME
+RUN useradd composer -g $WWW_DATA_GID -m --uid $COMPOSER_UID -d $COMPOSER_HOME
 
 #--------------------------------------------------------------
 # setup crayfish
@@ -67,20 +70,20 @@ USER composer
 
 WORKDIR /opt/www
 
-RUN --mount=type=cache,target=/home/composer/cache,uid=2000 \
+RUN --mount=type=cache,target=/home/composer/cache,uid=$COMPOSER_UID \
   composer create-project --no-dev --no-interaction -- "islandora/crayfish:${CRAYFISH_COMPOSER_SPEC}" crayfish
 
 WORKDIR crayfish
 
-COPY --link --chown=composer:www-data crayfish/Homarus/ crayfish/common/ Homarus/config/
-COPY --link --chown=composer:www-data crayfish/Hypercube/ crayfish/common/ Hypercube/config/
-COPY --link --chown=composer:www-data crayfish/Houdini/ crayfish/common/ Houdini/config/
+COPY --link --chown=$COMPOSER_UID:$WWW_DATA_GID crayfish/Homarus/ crayfish/common/ Homarus/config/
+COPY --link --chown=$COMPOSER_UID:$WWW_DATA_GID crayfish/Hypercube/ crayfish/common/ Hypercube/config/
+COPY --link --chown=$COMPOSER_UID:$WWW_DATA_GID crayfish/Houdini/ crayfish/common/ Houdini/config/
 
-COPY --link --chown=composer:www-data crayfish/syn-settings.xml syn-settings.xml
+COPY --link --chown=$COMPOSER_UID:$WWW_DATA_GID crayfish/syn-settings.xml syn-settings.xml
 
 RUN \
-  --mount=type=secret,id=composer-auth,target=/home/composer/auth.json,uid=2000 \
-  --mount=type=cache,target=/home/composer/cache,uid=2000 \
+  --mount=type=secret,id=composer-auth,target=/home/composer/auth.json,uid=$COMPOSER_UID \
+  --mount=type=cache,target=/home/composer/cache,uid=$COMPOSER_UID \
   <<EOS
 for i in "Homarus" "Houdini" "Hypercube"; do \
   composer config --working-dir=$i repositories.private-packagist composer https://repo.packagist.com/discoverygarden/ ; \
@@ -93,8 +96,7 @@ EOS
 
 USER root
 
-RUN chown -R www-data:www-data .
-
+RUN chown -R $WWW_DATA_UID:$WWW_DATA_GID .
 
 #--------------------------------------------------------------
 
