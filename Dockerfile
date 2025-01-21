@@ -109,6 +109,9 @@ USER root
 RUN chown -R $WWW_DATA_UID:$WWW_DATA_GID .
 
 #--------------------------------------------------------------
+# Add healtcheck
+COPY healtcheck.sh /healtcheck.sh
+#--------------------------------------------------------------
 
 USER root
 # Set ENV var OMP_THREAD_LIMIT=1 to avoid multi-threading
