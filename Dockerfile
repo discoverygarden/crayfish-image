@@ -6,7 +6,7 @@ ARG COMPOSER_HOME=/home/composer
 FROM debian:12.8-slim AS base
 
 ARG CRAYFISH_COMPOSER_SPEC="^4.1"
-ARG SYN_COMPOSER_SPEC="dev-feature/syn-config as 1.x-dev"
+ARG SYN_COMPOSER_SPEC="^1"
 
 ARG COMPOSER_UID=2000
 ARG WWW_DATA_UID=33
