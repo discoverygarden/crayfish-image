@@ -14,7 +14,7 @@
   <policy domain="resource" name="map" value="1GB"/>
   <policy domain="resource" name="width" value="128KP"/>
   <policy domain="resource" name="height" value="128KP"/>
-  <policy domain="resource" name="area" value="256MB"/>
+  <policy domain="resource" name="area" value="256MP"/>
   <policy domain="resource" name="disk" value="10GiB"/>
   <policy domain="delegate" rights="none" pattern="URL" />
   <policy domain="delegate" rights="none" pattern="HTTPS" />
