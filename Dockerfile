@@ -110,7 +110,7 @@ RUN chown -R $WWW_DATA_UID:$WWW_DATA_GID .
 
 #--------------------------------------------------------------
 # Add healtcheck
-COPY healtcheck.sh /healtcheck.sh
+COPY healtcheck.sh /healthcheck.sh
 #--------------------------------------------------------------
 
 USER root
