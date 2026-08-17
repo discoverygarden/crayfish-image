@@ -55,11 +55,12 @@ WORKDIR /
 #RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf \
 RUN echo 'ErrorLog /dev/stderr' >> /etc/apache2/apache2.conf \
   && echo 'TransferLog /dev/stdout' >> /etc/apache2/apache2.conf \
-  && echo 'CustomLog /dev/stdout combined' >> /etc/apache2/apache2.conf \
+  && echo 'CustomLog /dev/stdout combined env=!dontlog' >> /etc/apache2/apache2.conf \
   && chown -R $WWW_DATA_UID /var/log/apache2
 
 # disable and enable sites
 COPY --link 25-80-crayfish.conf /etc/apache2/sites-available/
+COPY --link --chown=$WWW_DATA_UID:$WWW_DATA_GID healthz.html /opt/www/healthz.html
 RUN a2dissite default-ssl.conf \
   && a2ensite 25-80-crayfish.conf \
   && rm /etc/apache2/sites-enabled/000-default.conf
