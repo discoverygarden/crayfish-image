@@ -54,7 +54,6 @@ WORKDIR /
 # setup apache2
 #RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf \
 RUN echo 'ErrorLog /dev/stderr' >> /etc/apache2/apache2.conf \
-  && echo 'TransferLog /dev/stdout' >> /etc/apache2/apache2.conf \
   && echo 'CustomLog /dev/stdout combined env=!dontlog' >> /etc/apache2/apache2.conf \
   && chown -R $WWW_DATA_UID /var/log/apache2
 
