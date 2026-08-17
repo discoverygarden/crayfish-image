@@ -109,9 +109,8 @@ USER root
 RUN chown -R $WWW_DATA_UID:$WWW_DATA_GID .
 
 #--------------------------------------------------------------
-# Add health/readiness checks
+# Add healthcheck
 COPY healthcheck.sh /healthcheck.sh
-COPY readinesscheck.sh /readinesscheck.sh
 #--------------------------------------------------------------
 
 USER root
