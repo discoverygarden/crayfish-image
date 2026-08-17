@@ -59,7 +59,7 @@ RUN echo 'ErrorLog /dev/stderr' >> /etc/apache2/apache2.conf \
 
 # disable and enable sites
 COPY --link 25-80-crayfish.conf /etc/apache2/sites-available/
-COPY --link --chown=$WWW_DATA_UID:$WWW_DATA_GID healthz.html /opt/www/healthz.html
+COPY --link --chown=$WWW_DATA_UID:$WWW_DATA_GID healthz.html /opt/www-healthz/healthz.html
 RUN a2dissite default-ssl.conf \
   && a2ensite 25-80-crayfish.conf \
   && rm /etc/apache2/sites-enabled/000-default.conf
