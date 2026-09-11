@@ -4,8 +4,10 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-  app.tesseract_executable: /usr/bin/tesseract
-  app.pdftotext_executable: /usr/bin/pdftotext
+  env(TESSERACT_EXECUTABLE): '/usr/bin/tesseract'
+  env(PDFTOTEXT_EXECUTABLE): '/usr/bin/pdftotext'
+  app.tesseract_executable: '%env(TESSERACT_EXECUTABLE)%'
+  app.pdftotext_executable: '%env(PDFTOTEXT_EXECUTABLE)%'
 
 services:
     # default configuration for services in *this* file
