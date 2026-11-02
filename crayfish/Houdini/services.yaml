@@ -4,7 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    app.executable: /usr/bin/convert
+    env(CONVERT_EXECUTABLE): '/usr/bin/convert'
+    app.executable: '%env(CONVERT_EXECUTABLE)%'
     app.formats.valid:
         - image/jpeg
         - image/png
