@@ -100,7 +100,7 @@ RUN \
 # firebase/php-jwt 6.x is flagged by PKSA-y2cr-5h3j-g3ys (CVE-2025-45769) and
 # crayfish-commons-syn pins ^6.10; ignore until it supports 7.x.
 for i in "Homarus" "Houdini" "Hypercube"; do \
-  composer config --working-dir=$i --no-interaction policy.advisories.ignore-id PKSA-y2cr-5h3j-g3ys
+  composer config --working-dir=$i --no-interaction audit.ignore PKSA-y2cr-5h3j-g3ys
   composer require --working-dir=$i --no-update --no-interaction -- "discoverygarden/crayfish-commons-syn:${SYN_COMPOSER_SPEC}"
   composer install --working-dir=$i --no-dev --no-interaction
   composer remove --working-dir=$i --no-interaction -- "lexik/jwt-authentication-bundle"
