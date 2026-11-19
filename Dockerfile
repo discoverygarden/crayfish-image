@@ -121,3 +121,17 @@ USER root
 ENV OMP_THREAD_LIMIT=1
 
 CMD ["/usr/sbin/apachectl", "-D", "FOREGROUND"]
+
+# --------------------------------------
+# Package manifest: prints every installed package to the build log as
+#   DGI-PKG <arch> <type> <name> <version>
+# so security checks can read versions from the image build's job log.
+# Keep this as the last step of the final stage.
+# --------------------------------------
+RUN a=$(uname -m); \
+  dpkg-query -W -f='${Package} ${Version}\n' | sed "s/^/DGI-PKG $a deb /"; \
+  for d in Homarus Houdini Hypercube; do \
+    COMPOSER_ALLOW_SUPERUSER=1 composer show -d /opt/www/crayfish/$d --no-interaction 2>/dev/null \
+      | awk -v a="$a" -v d="$d" '{print "DGI-PKG", a, "composer", $1, $2, d}'; \
+  done; \
+  true
